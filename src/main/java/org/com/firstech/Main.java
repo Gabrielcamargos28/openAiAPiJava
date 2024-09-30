@@ -6,14 +6,16 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
-        String userPrompt = "Gere 5 produtos";
-        String systemMessage = "Você é um gerador de produtos de um ecommerce de produtos digitais";
+        String userPrompt = "Escova de dentes";
+        String systemMessage = "Você é um gerador de produtos de um ecommerce de produtos digitais e deve responder apenas a categoria";
+
 
 
         String apiKey = System.getenv("OPENAI_API_KEY");
@@ -24,7 +26,7 @@ public class Main {
         }
 
 
-        OpenAiService service = new OpenAiService(apiKey);
+        OpenAiService service = new OpenAiService(apiKey, Duration.ofSeconds(30));
 
 
         ChatCompletionRequest completionRequest = ChatCompletionRequest
@@ -34,6 +36,7 @@ public class Main {
                         new ChatMessage(ChatMessageRole.USER.value(), userPrompt),
                         new ChatMessage(ChatMessageRole.SYSTEM.value(), systemMessage)
                 ))
+                .n(5)
                 .build();
 
         try {
